@@ -14,6 +14,9 @@ import pandas as pd
 
 from load_data import load_data
 from pathlib import Path
+from feature_engineering import create_features
+from clean_data import clean_dataset
+from encode_features import encode_dataset
 
 
 
@@ -173,45 +176,3 @@ def merge_all_tables(
 
     return final_dataset
 
-if __name__ == "__main__":
-
-    data = load_data()
-
-    accounts_df = data["accounts"]
-
-    subscriptions_df = data["subscriptions"]
-
-    usage_df = data["feature_usage"]
-
-    support_df = data["support_tickets"]
-
-    subscription_summary = create_subscription_summary(
-        subscriptions_df
-    )
-
-    usage_summary = create_usage_summary(
-        usage_df
-    )
-
-    support_summary = create_support_summary(
-        support_df
-    )
-
-    final_dataset = merge_all_tables(
-        accounts_df,
-        subscription_summary,
-        usage_summary,
-        support_summary
-    )
-
-    print(final_dataset.head())
-
-    print()
-
-    PROJECT_ROOT = Path(__file__).resolve().parents[2]
-    OUTPUT_PATH = PROJECT_ROOT / "data" / "processed" / "final_dataset.csv"
-    final_dataset.to_csv(OUTPUT_PATH, index=False)
-
-
-
-    print(final_dataset.shape)
